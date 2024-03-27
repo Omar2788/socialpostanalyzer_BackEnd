@@ -17,5 +17,7 @@ namespace socialpostanalyzer.Models
 
         public Post post { get; set; }
 
+        public Comment comment { get; set; }
+
     }
 }

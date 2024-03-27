@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using socialpostanalyzer.Migrations;
 
 namespace socialpostanalyzer.Controllers
 {
@@ -118,33 +119,36 @@ namespace socialpostanalyzer.Controllers
                         };
                         _context.Post.Add(post);
                         _context.SaveChanges();
-                        var reaction = new Reaction
-                        {
-                            Like = feed.like.summary.total_count,
-                            Love = feed.love.summary.total_count,
-                            Wow = feed.wow.summary.total_count,
-                            Sad = feed.sad.summary.total_count,
-                            Angry = feed.angry.summary.total_count,
-                            Haha = feed.haha.summary.total_count,
-                            post = post,
-                        };
-                        _context.Reaction.Add(reaction);
-                        _context.SaveChanges();
                         foreach (var commentData in feed.comments.Data)
                         {
                             var comment = new Comment
                             {
 
                                 Text = commentData.message,
-                                CreatedAt=commentData.created_time,
+                                CreatedAt = commentData.created_time,
                                 post = post,
 
                             };
                             _context.Comment.Add(comment);
                             _context.SaveChanges();
 
-                            
+                            var reaction = new Reaction
+                            {
+                                Like = feed.like.summary.total_count,
+                                Love = feed.love.summary.total_count,
+                                Wow = feed.wow.summary.total_count,
+                                Sad = feed.sad.summary.total_count,
+                                Angry = feed.angry.summary.total_count,
+                                Haha = feed.haha.summary.total_count,
+                                post = post,
+                                comment = comment
+
+                            };
+                            _context.Reaction.Add(reaction);
+                            _context.SaveChanges();
                         }
+                       
+                       
                     }
 
                     
